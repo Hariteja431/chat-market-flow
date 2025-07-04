@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { X, Home, ShoppingBag, DollarSign, Info, CreditCard, Bell, User, LogOut } from 'lucide-react';
+import { X, Home, ShoppingBag, DollarSign, Info, CreditCard, Bell, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/context/AppContext';
 
@@ -102,8 +102,8 @@ const SideDrawer = ({ isOpen, onClose }: SideDrawerProps) => {
                   onClick={handleLinkClick}
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
                 >
-                  <Home className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Home</span>
+                  <LayoutDashboard className="w-5 h-5 text-gray-600" />
+                  <span className="text-gray-900">Dashboard</span>
                 </Link>
                 <Link
                   to="/listings"
