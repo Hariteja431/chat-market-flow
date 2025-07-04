@@ -1,6 +1,6 @@
 
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Image as ImageIcon } from 'lucide-react';
+import { Send, Image as ImageIcon, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useApp } from '@/context/AppContext';
@@ -114,6 +114,10 @@ const ChatInterface = ({ type, onComplete }: ChatInterfaceProps) => {
     }
   };
 
+  const removeImage = (indexToRemove: number) => {
+    setSelectedImages(prev => prev.filter((_, index) => index !== indexToRemove));
+  };
+
   const quickReplies = type === 'sell' ? [
     "It's in excellent condition",
     "It's gently used",
@@ -139,20 +143,30 @@ const ChatInterface = ({ type, onComplete }: ChatInterfaceProps) => {
               className={`max-w-xs lg:max-w-md px-4 py-2 rounded-lg ${
                 message.sender === 'user'
                   ? 'bg-blue-600 text-white'
-                  : 'bg-gray-200 text-gray-900'
+                  : 'bg-gray-100 text-gray-900'
               }`}
             >
               <p className="text-sm">{message.content}</p>
-              {message.images && (
-                <div className="mt-2 space-y-2">
-                  {message.images.map((img, index) => (
-                    <img
-                      key={index}
-                      src={img}
-                      alt="Uploaded"
-                      className="w-full h-32 object-cover rounded"
-                    />
-                  ))}
+              {message.images && message.images.length > 0 && (
+                <div className="mt-3">
+                  <div className="flex flex-wrap gap-2">
+                    {message.images.map((img, index) => (
+                      <div
+                        key={index}
+                        className="relative rounded-lg overflow-hidden bg-white/10"
+                        style={{ 
+                          width: message.images!.length === 1 ? '200px' : '120px',
+                          height: message.images!.length === 1 ? '150px' : '90px'
+                        }}
+                      >
+                        <img
+                          src={img}
+                          alt={`Uploaded ${index + 1}`}
+                          className="w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
               <p className="text-xs opacity-70 mt-1">
@@ -164,7 +178,7 @@ const ChatInterface = ({ type, onComplete }: ChatInterfaceProps) => {
         
         {isTyping && (
           <div className="flex justify-start">
-            <div className="bg-gray-200 text-gray-900 px-4 py-2 rounded-lg">
+            <div className="bg-gray-100 text-gray-900 px-4 py-2 rounded-lg">
               <div className="flex space-x-1">
                 <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce"></div>
                 <div className="w-2 h-2 bg-gray-500 rounded-full animate-bounce" style={{animationDelay: '0.1s'}}></div>
@@ -201,29 +215,38 @@ const ChatInterface = ({ type, onComplete }: ChatInterfaceProps) => {
 
       {/* Image Preview */}
       {selectedImages.length > 0 && (
-        <div className="px-4 py-2 border-t border-gray-200">
-          <div className="flex space-x-2">
+        <div className="px-4 py-3 border-t border-gray-200 bg-gray-50">
+          <div className="flex items-center space-x-2 overflow-x-auto pb-2">
             {selectedImages.map((img, index) => (
-              <div key={index} className="relative">
-                <img src={img} alt="Preview" className="w-16 h-16 object-cover rounded" />
+              <div key={index} className="relative flex-shrink-0">
+                <div className="w-20 h-20 rounded-lg overflow-hidden bg-white shadow-sm border border-gray-200">
+                  <img 
+                    src={img} 
+                    alt={`Preview ${index + 1}`} 
+                    className="w-full h-full object-cover" 
+                  />
+                </div>
                 <button
-                  onClick={() => setSelectedImages(prev => prev.filter((_, i) => i !== index))}
-                  className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white rounded-full text-xs"
+                  onClick={() => removeImage(index)}
+                  className="absolute -top-2 -right-2 w-6 h-6 bg-red-500 hover:bg-red-600 text-white rounded-full flex items-center justify-center text-xs transition-colors shadow-sm"
                 >
-                  ×
+                  <X className="w-3 h-3" />
                 </button>
               </div>
             ))}
           </div>
+          <p className="text-xs text-gray-500 mt-2">
+            {selectedImages.length} image{selectedImages.length !== 1 ? 's' : ''} selected
+          </p>
         </div>
       )}
 
       {/* Input */}
-      <div className="p-4 border-t border-gray-200">
+      <div className="p-4 border-t border-gray-200 bg-white">
         <div className="flex items-center space-x-2">
           <button
             onClick={() => fileInputRef.current?.click()}
-            className="p-2 text-gray-500 hover:text-gray-700 transition-colors"
+            className="p-2 text-gray-500 hover:text-gray-700 hover:bg-gray-100 rounded-lg transition-colors"
           >
             <ImageIcon className="w-5 h-5" />
           </button>
@@ -234,7 +257,7 @@ const ChatInterface = ({ type, onComplete }: ChatInterfaceProps) => {
             placeholder={`Type your message...`}
             className="flex-1"
           />
-          <Button onClick={handleSend} size="sm">
+          <Button onClick={handleSend} size="sm" className="px-4">
             <Send className="w-4 h-4" />
           </Button>
         </div>
