@@ -1,13 +1,18 @@
 
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Menu, Bell } from 'lucide-react';
+import { Menu, Bell, User, LogOut } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { SignedIn, SignedOut, SignInButton, SignUpButton, UserButton } from "@clerk/clerk-react";
+import { useApp } from '@/context/AppContext';
 import SideDrawer from './SideDrawer';
 
 const Navbar = () => {
+  const { isLoggedIn, setIsLoggedIn } = useApp();
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
 
   return (
     <>
@@ -23,62 +28,66 @@ const Navbar = () => {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-6">
-            <SignedOut>
-              <Link to="/buy/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Buy
-              </Link>
-              <Link to="/sell/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Sell
-              </Link>
-              <Link to="/info" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                How It Works
-              </Link>
-              <SignInButton mode="modal">
+            {!isLoggedIn ? (
+              <>
+                <Link to="/buy/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Buy
+                </Link>
+                <Link to="/sell/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Sell
+                </Link>
+                <Link to="/info" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  How It Works
+                </Link>
                 <Button 
+                  onClick={() => setIsLoggedIn(true)} 
                   variant="outline" 
                   size="sm"
                   className="mr-2 rounded-full border-slate-300 dark:border-slate-600"
                 >
                   Log In
                 </Button>
-              </SignInButton>
-              <SignUpButton mode="modal">
                 <Button 
+                  onClick={() => setIsLoggedIn(true)} 
                   size="sm"
                   className="bg-blue-600 hover:bg-blue-700 rounded-full"
                 >
                   Sign Up
                 </Button>
-              </SignUpButton>
-            </SignedOut>
-            
-            <SignedIn>
-              <Link to="/dashboard" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Dashboard
-              </Link>
-              <Link to="/listings" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                My Listings
-              </Link>
-              <Link to="/buy/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Buy
-              </Link>
-              <Link to="/sell/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                Sell
-              </Link>
-              <div className="flex items-center space-x-3">
-                <button className="relative p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
-                  <Bell className="w-5 h-5" />
-                  <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
-                </button>
-                <UserButton 
-                  appearance={{
-                    elements: {
-                      avatarBox: "w-8 h-8"
-                    }
-                  }}
-                />
-              </div>
-            </SignedIn>
+              </>
+            ) : (
+              <>
+                <Link to="/dashboard" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Dashboard
+                </Link>
+                <Link to="/listings" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  My Listings
+                </Link>
+                <Link to="/buy/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Buy
+                </Link>
+                <Link to="/sell/chat" className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                  Sell
+                </Link>
+                <div className="flex items-center space-x-3">
+                  <button className="relative p-2 text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white transition-colors">
+                    <Bell className="w-5 h-5" />
+                    <span className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+                  </button>
+                  <div className="w-8 h-8 bg-slate-300 dark:bg-slate-600 rounded-full flex items-center justify-center">
+                    <User className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                  </div>
+                  <Button
+                    onClick={handleLogout}
+                    variant="ghost"
+                    size="sm"
+                    className="text-slate-600 dark:text-slate-300 hover:text-slate-900 dark:hover:text-white"
+                  >
+                    <LogOut className="w-4 h-4" />
+                  </Button>
+                </div>
+              </>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
