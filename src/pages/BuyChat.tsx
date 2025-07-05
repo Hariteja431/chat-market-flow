@@ -1,20 +1,23 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Bot, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatInterface from '@/components/ChatInterface';
 import BuyChatOptionsModal from '@/components/BuyChatOptionsModal';
+import ViewDraftListingModal from '@/components/ViewDraftListingModal';
 import { useApp } from '@/context/AppContext';
 
 const BuyChat = () => {
   const navigate = useNavigate();
   const { clearChat } = useApp();
   const [isOptionsModalOpen, setIsOptionsModalOpen] = useState(false);
+  const [isViewDraftModalOpen, setIsViewDraftModalOpen] = useState(false);
   const chatTitle = "Vintage Americana Sneakers";
 
   const handleBack = () => {
     clearChat();
-    navigate('/buy/dashboard');
+    navigate('/');
   };
 
   return (
@@ -50,7 +53,10 @@ const BuyChat = () => {
 
       {/* Chat Interface */}
       <div className="flex-1">
-        <ChatInterface type="buy" />
+        <ChatInterface 
+          type="buy" 
+          onViewDraftListing={() => setIsViewDraftModalOpen(true)}
+        />
       </div>
 
       {/* Buy Chat Options Modal */}
@@ -58,6 +64,12 @@ const BuyChat = () => {
         isOpen={isOptionsModalOpen}
         onClose={() => setIsOptionsModalOpen(false)}
         chatTitle={chatTitle}
+      />
+
+      {/* View Draft Listing Modal */}
+      <ViewDraftListingModal
+        isOpen={isViewDraftModalOpen}
+        onClose={() => setIsViewDraftModalOpen(false)}
       />
     </div>
   );

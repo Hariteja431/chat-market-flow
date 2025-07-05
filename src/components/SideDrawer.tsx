@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { X, Home, ShoppingBag, DollarSign, Info, CreditCard, Bell, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { X, Home, ShoppingBag, DollarSign, Info, Bell, User, LogOut, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useApp } from '@/context/AppContext';
 
@@ -85,14 +85,6 @@ const SideDrawer = ({ isOpen, onClose }: SideDrawerProps) => {
                 >
                   <Info className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-900">How It Works</span>
-                </Link>
-                <Link
-                  to="/pricing"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <CreditCard className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Pricing</span>
                 </Link>
               </>
             ) : (

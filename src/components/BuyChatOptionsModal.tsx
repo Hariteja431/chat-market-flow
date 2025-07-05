@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import { X, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,6 +14,8 @@ interface BuyChatOptionsModalProps {
 }
 
 const BuyChatOptionsModal = ({ isOpen, onClose, chatTitle }: BuyChatOptionsModalProps) => {
+  const [title, setTitle] = useState(chatTitle);
+
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="sm:max-w-md">
@@ -29,9 +31,9 @@ const BuyChatOptionsModal = ({ isOpen, onClose, chatTitle }: BuyChatOptionsModal
             <Label htmlFor="title">Title</Label>
             <Input
               id="title"
-              value={chatTitle}
-              readOnly
-              className="bg-gray-50"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Vintage Americana Shoes"
             />
           </div>
           

@@ -1,3 +1,4 @@
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ArrowLeft, Bot, MoreVertical } from 'lucide-react';
@@ -15,7 +16,7 @@ const SellChat = () => {
 
   const handleBack = () => {
     clearChat();
-    navigate('/sell/listings');
+    navigate('/');
   };
 
   const handleSaveListing = () => {

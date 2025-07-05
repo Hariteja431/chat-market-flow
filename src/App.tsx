@@ -14,7 +14,6 @@ import DraftListing from "./pages/DraftListing";
 import MyListings from "./pages/MyListings";
 import Dashboard from "./pages/Dashboard";
 import Info from "./pages/Info";
-import Pricing from "./pages/Pricing";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -36,7 +35,6 @@ const App = () => (
             <Route path="/listings" element={<MyListings />} />
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/info" element={<Info />} />
-            <Route path="/pricing" element={<Pricing />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
