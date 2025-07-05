@@ -1,7 +1,6 @@
-
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { ArrowLeft, Robot, MoreVertical } from 'lucide-react';
+import { ArrowLeft, Bot, MoreVertical } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import ChatInterface from '@/components/ChatInterface';
 import DraftListingModal from '@/components/DraftListingModal';
@@ -53,7 +52,7 @@ const SellChat = () => {
               <ArrowLeft className="w-5 h-5" />
             </Button>
             <div className="flex items-center space-x-2">
-              <Robot className="w-5 h-5 text-green-600" />
+              <Bot className="w-5 h-5 text-green-600" />
               <div>
                 <div className="flex items-center space-x-2">
                   <span className="text-sm text-gray-500">Sell Chat</span>

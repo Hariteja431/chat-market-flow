@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { X, Robot } from 'lucide-react';
+import { X, Bot } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -19,7 +19,7 @@ const BuyChatOptionsModal = ({ isOpen, onClose, chatTitle }: BuyChatOptionsModal
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center space-x-2">
-            <Robot className="w-5 h-5 text-blue-600" />
+            <Bot className="w-5 h-5 text-blue-600" />
             <span>Buy Chat Options</span>
           </DialogTitle>
         </DialogHeader>
