@@ -1,9 +1,9 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { X, Home, ShoppingBag, DollarSign, Info, CreditCard, Bell, User, LogOut, LayoutDashboard } from 'lucide-react';
+import { X, Home, ShoppingBag, DollarSign, Info, CreditCard, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { useApp } from '@/context/AppContext';
+import { SignedIn, SignedOut, SignInButton, SignUpButton, SignOutButton } from "@clerk/clerk-react";
 
 interface SideDrawerProps {
   isOpen: boolean;
@@ -11,13 +11,6 @@ interface SideDrawerProps {
 }
 
 const SideDrawer = ({ isOpen, onClose }: SideDrawerProps) => {
-  const { isLoggedIn, setIsLoggedIn } = useApp();
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-    onClose();
-  };
-
   const handleLinkClick = () => {
     onClose();
   };
@@ -52,104 +45,100 @@ const SideDrawer = ({ isOpen, onClose }: SideDrawerProps) => {
 
           {/* Navigation Links */}
           <nav className="flex-1 p-4 space-y-2">
-            {!isLoggedIn ? (
-              <>
-                <Link
-                  to="/"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <Home className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Home</span>
-                </Link>
-                <Link
-                  to="/buy/chat"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <ShoppingBag className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Buy</span>
-                </Link>
-                <Link
-                  to="/sell/chat"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <DollarSign className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Sell</span>
-                </Link>
-                <Link
-                  to="/info"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <Info className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">How It Works</span>
-                </Link>
-                <Link
-                  to="/pricing"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <CreditCard className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Pricing</span>
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link
-                  to="/dashboard"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <LayoutDashboard className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Dashboard</span>
-                </Link>
-                <Link
-                  to="/listings"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <ShoppingBag className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">My Listings</span>
-                </Link>
-                <Link
-                  to="/sell/chat"
-                  onClick={handleLinkClick}
-                  className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
-                >
-                  <DollarSign className="w-5 h-5 text-gray-600" />
-                  <span className="text-gray-900">Start Selling</span>
-                </Link>
+            <SignedOut>
+              <Link
+                to="/"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <Home className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">Home</span>
+              </Link>
+              <Link
+                to="/buy/chat"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <ShoppingBag className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">Buy</span>
+              </Link>
+              <Link
+                to="/sell/chat"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <DollarSign className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">Sell</span>
+              </Link>
+              <Link
+                to="/info"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <Info className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">How It Works</span>
+              </Link>
+              <Link
+                to="/pricing"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <CreditCard className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">Pricing</span>
+              </Link>
+            </SignedOut>
+              
+            <SignedIn>
+              <Link
+                to="/dashboard"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <LayoutDashboard className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">Dashboard</span>
+              </Link>
+              <Link
+                to="/listings"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <ShoppingBag className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">My Listings</span>
+              </Link>
+              <Link
+                to="/sell/chat"
+                onClick={handleLinkClick}
+                className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors"
+              >
+                <DollarSign className="w-5 h-5 text-gray-600" />
+                <span className="text-gray-900">Start Selling</span>
+              </Link>
+              <SignOutButton>
                 <button
-                  onClick={handleLogout}
+                  onClick={onClose}
                   className="flex items-center space-x-3 p-3 rounded-lg hover:bg-gray-100 transition-colors w-full text-left"
                 >
-                  <LogOut className="w-5 h-5 text-gray-600" />
                   <span className="text-gray-900">Log Out</span>
                 </button>
-              </>
-            )}
+              </SignOutButton>
+            </SignedIn>
           </nav>
 
           {/* Footer */}
-          {!isLoggedIn && (
+          <SignedOut>
             <div className="p-4 border-t border-gray-200 space-y-3">
-              <Button 
-                onClick={() => { setIsLoggedIn(true); onClose(); }} 
-                className="w-full"
-              >
-                Sign Up
-              </Button>
-              <Button 
-                onClick={() => { setIsLoggedIn(true); onClose(); }} 
-                variant="outline" 
-                className="w-full"
-              >
-                Log In
-              </Button>
+              <SignUpButton mode="modal">
+                <Button className="w-full" onClick={onClose}>
+                  Sign Up
+                </Button>
+              </SignUpButton>
+              <SignInButton mode="modal">
+                <Button variant="outline" className="w-full" onClick={onClose}>
+                  Log In
+                </Button>
+              </SignInButton>
             </div>
-          )}
+          </SignedOut>
         </div>
       </div>
     </>

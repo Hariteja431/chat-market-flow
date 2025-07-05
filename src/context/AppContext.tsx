@@ -21,8 +21,6 @@ interface ChatMessage {
 }
 
 interface AppContextType {
-  isLoggedIn: boolean;
-  setIsLoggedIn: (value: boolean) => void;
   listings: Listing[];
   addListing: (listing: Listing) => void;
   updateListing: (id: string, updates: Partial<Listing>) => void;
@@ -45,7 +43,6 @@ export const useApp = () => {
 };
 
 export const AppProvider = ({ children }: { children: ReactNode }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [listings, setListings] = useState<Listing[]>([
     {
       id: '1',
@@ -94,8 +91,6 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const value = {
-    isLoggedIn,
-    setIsLoggedIn,
     listings,
     addListing,
     updateListing,

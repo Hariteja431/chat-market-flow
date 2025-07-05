@@ -4,13 +4,11 @@ import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { motion } from 'framer-motion';
 import Navbar from '@/components/Navbar';
-import { useApp } from '@/context/AppContext';
+import { SignedIn, SignedOut, SignInButton, SignUpButton } from "@clerk/clerk-react";
 import { AuroraBackground } from '@/components/ui/aurora-background';
 import { MessageCircle, ShoppingBag, Zap, Shield } from 'lucide-react';
 
 const Landing = () => {
-  const { setIsLoggedIn, isLoggedIn } = useApp();
-
   return (
     <div className="min-h-screen">
       <Navbar />
@@ -37,7 +35,7 @@ const Landing = () => {
             Skip the hassle of traditional marketplaces. Just chat with our AI to list your items or find exactly what you're looking for. It's like having a personal shopping assistant that never sleeps.
           </p>
           
-          {!isLoggedIn ? (
+          <SignedOut>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link to="/sell/chat">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-full">
@@ -50,7 +48,9 @@ const Landing = () => {
                 </Button>
               </Link>
             </div>
-          ) : (
+          </SignedOut>
+          
+          <SignedIn>
             <div className="flex flex-col sm:flex-row gap-4 mt-8">
               <Link to="/sell/chat">
                 <Button size="lg" className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-4 text-lg rounded-full flex items-center gap-2">
@@ -70,7 +70,7 @@ const Landing = () => {
                 </Button>
               </Link>
             </div>
-          )}
+          </SignedIn>
         </motion.div>
       </AuroraBackground>
 
@@ -135,25 +135,22 @@ const Landing = () => {
       </div>
 
       {/* Mobile CTA Bar - Only show when not logged in */}
-      {!isLoggedIn && (
+      <SignedOut>
         <div className="fixed bottom-0 left-0 right-0 bg-white dark:bg-slate-900 border-t border-slate-200 dark:border-slate-700 p-4 md:hidden z-30">
           <div className="flex space-x-3">
-            <Button 
-              onClick={() => setIsLoggedIn(true)} 
-              className="flex-1 bg-blue-600 hover:bg-blue-700 rounded-full"
-            >
-              Sign Up
-            </Button>
-            <Button 
-              onClick={() => setIsLoggedIn(true)} 
-              variant="outline" 
-              className="flex-1 rounded-full border-slate-300 dark:border-slate-600"
-            >
-              Log In
-            </Button>
+            <SignUpButton mode="modal">
+              <Button className="flex-1 bg-blue-600 hover:bg-blue-700 rounded-full">
+                Sign Up
+              </Button>
+            </SignUpButton>
+            <SignInButton mode="modal">
+              <Button variant="outline" className="flex-1 rounded-full border-slate-300 dark:border-slate-600">
+                Log In
+              </Button>
+            </SignInButton>
           </div>
         </div>
-      )}
+      </SignedOut>
     </div>
   );
 };
